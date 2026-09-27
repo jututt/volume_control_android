@@ -17,7 +17,7 @@
             android:id="@+id/volume_down"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="#555"
+            android:background="?attr/colorControlNormal"
             android:clickable="true"
             android:elevation="5dp"
             android:focusable="true"
@@ -25,28 +25,31 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="-"
-            android:textColor="#fff"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="25sp" />
 
         <LinearLayout
             android:id="@+id/volume_slider"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/notification_slider"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:minHeight="50dp" />
 
         <TextView
             android:id="@+id/volume_up"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="#555"
+            android:background="?attr/colorControlNormal"
+            android:clickable="true"
             android:elevation="5dp"
+            android:focusable="true"
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="+"
-            android:textColor="#fff"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="25sp" />
 
     </LinearLayout>
@@ -61,7 +64,7 @@
         android:gravity="center"
         android:minWidth="50dp"
         android:text="@string/volumeType_media"
-        android:textColor="#fff"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="17sp"
         android:textStyle="normal" />
 
