@@ -5,11 +5,11 @@ android {
     buildToolsVersion '30.0.2'
 
     defaultConfig {
-        applicationId "com.punksta.apps.volumecontrol"
+        applicationId "com.jututt.volumecontrol"
         minSdkVersion 15
         targetSdkVersion 30
         versionCode 32
-        versionName "2.6.0"
+        versionName "2.6.1"
     }
 
     buildTypes {
