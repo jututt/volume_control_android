@@ -1,4 +1,5 @@
 [java](./app/src/main/java/com/example/punksta/volumecontrol/)
+[layout](./app/src/main/res/layout/)
 
 # Volume control android
 Simple Android app for managing volume
