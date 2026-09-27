@@ -234,6 +234,7 @@ public class SoundService extends Service {
         try {
             SoundProfile[] profiles = showProfiles ? soundProfileStorage.loadAll() : new SoundProfile[0];
 
+            // Always build and post notification when starting foreground to avoid timeout
             if (force || tracker.shouldShow(control, profilesToShow, profiles)) {
 
                 Notification n = buildForegroundNotification(this, profiles, control, profilesToShow);
@@ -246,11 +247,28 @@ public class SoundService extends Service {
 
                 isForeground = true;
                 tracker.onNotificationShow(control, profilesToShow, profiles);
+            } else if (startService && !isForeground) {
+                // If we're trying to start foreground but tracker says not to show,
+                // we still need to post a minimal notification to avoid crash
+                Log.w(TAG, "Starting foreground but tracker says not to show - posting minimal notification");
+                Notification n = buildForegroundNotification(this, new SoundProfile[0], control, null);
+                startForeground(staticNotificationNumber, n);
+                isForeground = true;
             }
 
         } catch (RuntimeException | JSONException e) {
             Log.e(TAG, "Failed to display notification", e);
             e.printStackTrace();
+            // If notification fails, still try to start foreground with a basic notification
+            if (startService && !isForeground) {
+                try {
+                    Notification n = buildForegroundNotification(this, new SoundProfile[0], control, null);
+                    startForeground(staticNotificationNumber, n);
+                    isForeground = true;
+                } catch (Exception ex) {
+                    Log.e(TAG, "Failed to start foreground even with basic notification", ex);
+                }
+            }
         }
     }
 
@@ -331,11 +349,12 @@ public class SoundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        // Initialize notificationManagerCompat FIRST before any service operations
         notificationManagerCompat = NotificationManagerCompat.from(this);
         soundProfileStorage = SoundApplication.getSoundProfileStorage(this);
         control = SoundApplication.getVolumeControl(this);
 
-        // Create notification channel before any startForeground call
+        // Create notification channel BEFORE any startForeground call
         createStaticNotificationChannel();
     }
 
