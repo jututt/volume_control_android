@@ -164,14 +164,14 @@ public class SoundService extends Service {
                 }
             }
 
-            remoteViews.setOnClickPendingIntent(R.id.remove_notification_action, PendingIntent.getService(context, 100, getStopIntent(context), 0));
+            //remoteViews.setOnClickPendingIntent(R.id.remove_notification_action, PendingIntent.getService(context, 100, getStopIntent(context), 0));
         }
         builder
-                .setContentTitle(context.getString(R.string.app_name))
+                .setContentTitle(" ")
                 .setOngoing(true)
-                .setContentText(context.getString(R.string.notification_widget))
+                .setContentText(" ")
                 .setSmallIcon(R.drawable.notification_icon)
-                .setTicker(context.getString(R.string.app_name))
+                .setTicker(" ")
                 .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
 
