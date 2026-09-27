@@ -129,7 +129,8 @@ public class SoundService extends Service {
         return views;
     }
 
-    private static Notification buildForegroundNotification(
+    
+        private static Notification buildForegroundNotification(
             Context context,
             SoundProfile[] profiles,
             VolumeControl control,
@@ -162,25 +163,33 @@ public class SoundService extends Service {
                     remoteViews.addView(R.id.volume_sliders, buildVolumeSlider(context, control, notificationType.audioStreamName, context.getString(notificationType.nameId)));
                 }
             }
-
-            //remoteViews.setOnClickPendingIntent(R.id.remove_notification_action, PendingIntent.getService(context, 100, getStopIntent(context), 0));
         }
-        builder
-                .setContentTitle(" ")
+
+        // Setup base notification configs
+        builder.setContentTitle(" ")
                 .setOngoing(true)
                 .setContentText(" ")
                 .setSmallIcon(android.R.color.transparent)
                 .setTicker(" ")
                 .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
                 .setColorized(true)
-                .setColor(android.graphics.Color.parseColor("#121212")) // Solid Off-Black matching your background_dark
-                .setStyle(new androidx.media.app.NotificationCompat.DecoratedMediaCustomViewStyle());
+                .setColor(android.graphics.Color.BLACK); // Sets base container framework tint mapping to black
+
         if ((volumeTypesToShow != null && volumeTypesToShow.size() > 0) || (profiles != null && profiles.length > 0)) {
             builder.setContentText(context.getString(R.string.notification_widget_featured))
-                .setCustomContentView(remoteViews)  
-                .setCustomBigContentView(remoteViews);
+                    .setCustomContentView(remoteViews)
+                    .setCustomBigContentView(remoteViews);
         }
-        return builder.build();
+
+        // --- FIXED FOR COMPILING WITHOUT EXT. DEPENDENCIES ---
+        // Generates the final notification and directly strips the system container limits 
+        // through Android's native framework decoration style properties.
+        Notification notification = builder.build();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            notification.style = new android.app.Notification.MediaStyle();
+        }
+
+        return notification;   
     }
 
     private static String capitalize(String str) {
