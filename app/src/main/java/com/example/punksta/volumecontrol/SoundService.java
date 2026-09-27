@@ -129,17 +129,15 @@ public class SoundService extends Service {
         return views;
     }
 
-    
-            private static Notification buildForegroundNotification(
+    private static Notification buildForegroundNotification(
             Context context,
             SoundProfile[] profiles,
             VolumeControl control,
             List<Integer> volumeTypesToShow
     ) {
-        // --- 1. SET UP THE RAW BASE WINDOW ENGINE OVERRIDE ---
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, staticNotificationId);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_view);
-        
+
         if (profiles != null) {
             remoteViews.removeAllViews(R.id.notifications_user_profiles);
             for (SoundProfile profile : profiles) {
@@ -163,33 +161,20 @@ public class SoundService extends Service {
             }
         }
 
-        // --- 2. THE CORE STRIP CONFIGURATION CHAIN ---
-        // Completely isolates the custom layout by stripping the text placeholder containers
         builder.setSmallIcon(R.drawable.notification_icon)
-               .setOngoing(true)
-               .setOnlyAlertOnce(true)
-               .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
-        // Inject the custom views into the structural framework blocks
         builder.setCustomContentView(remoteViews)
-               .setCustomBigContentView(remoteViews)
-               .setCustomHeadsUpContentView(remoteViews);
+                .setCustomBigContentView(remoteViews)
+                .setCustomHeadsUpContentView(remoteViews);
 
-        // --- 3. HARD-DECORATE THE GENERATED WRAPPER ---
         Notification notification = builder.build();
-
-        // This structural reflection flag strips out the outer white template frame capsule 
-        // completely across Custom ROMs like crDroid
         notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
-        
-        // Overrides the view hierarchy root style context programmatically
-        //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            //notification.decorView = null; // Forces system to abandon template decor caching
-        //}
-
         return notification;
     }
-    
+
     private static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
@@ -236,7 +221,6 @@ public class SoundService extends Service {
         return null;
     }
 
-
     private void updateNotification() {
         if (isForeground)
             updateNotification(false, false);
@@ -245,7 +229,6 @@ public class SoundService extends Service {
     private void startForeground() {
         updateNotification(true, true);
     }
-
 
     private void updateNotification(boolean startService, boolean force) {
         try {
@@ -256,17 +239,12 @@ public class SoundService extends Service {
                 Notification n = buildForegroundNotification(this, profiles, control, profilesToShow);
 
                 if (startService) {
-                    startForeground(
-                            staticNotificationNumber,
-                            n
-                    );
+                    startForeground(staticNotificationNumber, n);
                 } else {
-                    notificationManagerCompat.notify(staticNotificationNumber,
-                            n);
+                    notificationManagerCompat.notify(staticNotificationNumber, n);
                 }
 
                 isForeground = true;
-
                 tracker.onNotificationShow(control, profilesToShow, profiles);
             }
 
@@ -276,9 +254,7 @@ public class SoundService extends Service {
         }
     }
 
-
     private void registerListeners(List<Integer> profilesToShow) {
-
         if (profilesToShow != null) {
             for (Integer id : profilesToShow) {
                 control.registerVolumeListener(id, volumeListener, false);
@@ -289,7 +265,6 @@ public class SoundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         String action = intent != null ? intent.getAction() : null;
 
         if (!DNDModeChecker.isDNDPermissionGranted(this) && !STOP_ACTION.equals(action)) {
@@ -310,9 +285,7 @@ public class SoundService extends Service {
         } else if (STOP_ACTION.equals(action)) {
             startForeground();
             stopForeground(true);
-            notificationManagerCompat.cancel(
-                    staticNotificationNumber
-            );
+            notificationManagerCompat.cancel(staticNotificationNumber);
             stop(startId);
             isForeground = false;
             return super.onStartCommand(intent, flags, startId);
@@ -331,7 +304,6 @@ public class SoundService extends Service {
             startForeground();
             return START_STICKY;
         } else if (FOREGROUND_ACTION.equals(action)) {
-            createStaticNotificationChannel();
             showProfiles = intent.getBooleanExtra(EXTRA_SHOW_PROFILES, true);
             profilesToShow = (List<Integer>) intent.getSerializableExtra(EXTRA_VOLUME_TYPES_IDS);
             registerListeners(profilesToShow);
@@ -362,14 +334,26 @@ public class SoundService extends Service {
         notificationManagerCompat = NotificationManagerCompat.from(this);
         soundProfileStorage = SoundApplication.getSoundProfileStorage(this);
         control = SoundApplication.getVolumeControl(this);
+
+        // Create notification channel before any startForeground call
+        createStaticNotificationChannel();
     }
 
     private void createStaticNotificationChannel() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(staticNotificationId, "Static notification widget", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(
+                    staticNotificationId,
+                    "Static notification widget",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
             channel.setSound(null, null);
             channel.enableVibration(false);
-            notificationManagerCompat.createNotificationChannel(channel);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 }
