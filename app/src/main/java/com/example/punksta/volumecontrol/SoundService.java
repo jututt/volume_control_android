@@ -178,7 +178,6 @@ public class SoundService extends Service {
             builder.setContentText(context.getString(R.string.notification_widget_featured))
                     .setCustomBigContentView(remoteViews);
         }
-        builder.setStyle(new androidx.core.app.NotificationCompat.DecoratedCustomViewStyle());
         return builder.build();
     }
 
