@@ -23,7 +23,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Clean and Build APK Safely
-      run: ./gradlew clean assembleDebug -Dorg.gradle.java.home=$JAVA_HOME --no-daemon -Xlint:-options
+      run: ./gradlew clean assembleDebug --no-daemon
       continue-on-error: false
 
     - name: Upload Finished APK
