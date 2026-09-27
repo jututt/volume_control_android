@@ -176,7 +176,8 @@ public class SoundService extends Service {
 
         if ((volumeTypesToShow != null && volumeTypesToShow.size() > 0) || (profiles != null && profiles.length > 0)) {
             builder.setContentText(context.getString(R.string.notification_widget_featured))
-                    .setCustomBigContentView(remoteViews);
+                .setCustomContentView(remoteViews)  
+                .setCustomBigContentView(remoteViews);
         }
         return builder.build();
     }
