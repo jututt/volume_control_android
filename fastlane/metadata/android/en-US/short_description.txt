@@ -1,1 +1,0 @@
-Simple volume control application without unnecessary features
