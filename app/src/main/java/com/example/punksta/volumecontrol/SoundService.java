@@ -122,9 +122,7 @@ public class SoundService extends Service {
             }
         }
 
-        builder.setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(context.getString(R.string.app_name))
-                .setOngoing(true)
+        builder.setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setContentIntent(PendingIntent.getActivity(context, 0,
                         new Intent(context, MainActivity.class), pendingIntentFlags()))
@@ -184,13 +182,13 @@ public class SoundService extends Service {
     private void ensureForegroundNotification() {
         if (isForeground) return;
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Volume controls active")
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setContentIntent(PendingIntent.getActivity(this, 0,
                         new Intent(this, MainActivity.class), pendingIntentFlags()))
+                .setCustomContentView(new RemoteViews(getPackageName(), R.layout.notification_view))
+                .setCustomBigContentView(new RemoteViews(getPackageName(), R.layout.notification_view))
+                .setCustomHeadsUpContentView(new RemoteViews(getPackageName(), R.layout.notification_view))
                 .build();
         startForeground(NOTIFICATION_ID, notification);
         isForeground = true;
