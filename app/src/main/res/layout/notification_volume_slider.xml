@@ -17,7 +17,7 @@
             android:id="@+id/volume_down"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="#ddd"
+            android:background="?attr/colorControlNormal"
             android:clickable="true"
             android:elevation="5dp"
             android:focusable="true"
@@ -25,7 +25,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="-"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -40,13 +40,13 @@
             android:id="@+id/volume_up"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="#ddd"
+            android:background="?attr/colorControlNormal"
             android:elevation="5dp"
             android:gravity="center"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="+"
-            android:textColor="@android:color/black"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="25sp" />
 
     </LinearLayout>
@@ -61,7 +61,7 @@
         android:gravity="center"
         android:minWidth="50dp"
         android:text="@string/volumeType_media"
-        android:textColor="@color/notification_volume_title_color"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="17sp"
         android:textStyle="normal" />
 
