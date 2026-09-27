@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId "com.jututt.volumecontrol"
         minSdkVersion 21 // Bumped from 15 to 21 to support modern library versions
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 32
         versionName "2.6.1"
 
