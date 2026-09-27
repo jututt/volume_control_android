@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.punksta.volumecontrol">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Core Audio and System Permission Flags -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -22,9 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-
+        
         <!-- Persistent Service handling audio widget parameters -->
-        <service
+        <service 
             android:name=".SoundService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
@@ -43,10 +42,10 @@
         </receiver>
 
         <!-- Secondary Profile Editing view framework -->
-        <activity
+        <activity 
             android:name=".EditProfileActivity"
             android:exported="false" />
-
+            
         <!-- System Entry Point Application View Interface -->
         <activity
             android:name=".MainActivity"
