@@ -136,7 +136,7 @@ public class SoundService extends Service {
             List<Integer> volumeTypesToShow
     ) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, staticNotificationId);
-        builder.setSilent(true); 
+        return builder.build();
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_view);
         if (profiles != null) {
