@@ -185,9 +185,9 @@ public class SoundService extends Service {
         // Generates the final notification and directly strips the system container limits 
         // through Android's native framework decoration style properties.
         Notification notification = builder.build();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            notification.style = new android.app.Notification.MediaStyle();
-        }
+        //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            //notification.style = new android.app.Notification.MediaStyle();
+        //}
 
         return notification;   
     }
