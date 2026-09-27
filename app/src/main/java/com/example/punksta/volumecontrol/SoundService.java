@@ -173,8 +173,8 @@ public class SoundService extends Service {
                 .setTicker(" ")
                 .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
                 .setColorized(true)
-                .setColor(android.graphics.Color.parseColor("#121212")); // Solid Off-Black matching your background_dark
-        
+                .setColor(android.graphics.Color.parseColor("#121212")) // Solid Off-Black matching your background_dark
+                .setStyle(new androidx.media.app.NotificationCompat.DecoratedMediaCustomViewStyle());
         if ((volumeTypesToShow != null && volumeTypesToShow.size() > 0) || (profiles != null && profiles.length > 0)) {
             builder.setContentText(context.getString(R.string.notification_widget_featured))
                 .setCustomContentView(remoteViews)  
