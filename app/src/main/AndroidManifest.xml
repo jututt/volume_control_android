@@ -9,6 +9,9 @@
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <!-- Add this so your background service notification can physically display on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 
     <application
         android:name=".SoundApplication"
@@ -21,7 +24,12 @@
         <!-- SECURED: Added exported="false" since it has no intent filters -->
         <service 
             android:name=".SoundService"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property 
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Manages persistent background volume control notifications and audio state widgets." />
+        </service>
 
         <receiver
             android:name=".BootReceiver"
