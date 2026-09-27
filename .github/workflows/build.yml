@@ -5,8 +5,8 @@ on:
     #branches: [ "master", "main" ]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+#env:
+  #FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -30,7 +30,8 @@ jobs:
       continue-on-error: false
 
     - name: Upload Finished APK
-      uses: actions/upload-artifact@v4.6.1
+      uses: actions/upload-artifact@v7
       with:
-        name: volume-control-clean-apk
-        path: app/build/outputs/apk/debug/*.apk
+        #name: volume-control-clean-apk
+        path: app/build/outputs/apk/debug/volume.apk
+        archive: false
