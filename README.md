@@ -1,12 +1,6 @@
 # Volume control android
 Simple Android app for managing volume
 
-<a href="https://f-droid.org/packages/com.punksta.apps.volumecontrol">
-    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-    alt="Get it on F-Droid"
-    height="80">
-</a>
-
 ## Details
 - Simple as can be (back to 2010-style architecture)
 - Dark theme
