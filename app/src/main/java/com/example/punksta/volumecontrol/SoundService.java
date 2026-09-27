@@ -170,7 +170,7 @@ public class SoundService extends Service {
                 .setContentTitle(" ")
                 .setOngoing(true)
                 .setContentText(" ")
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(android.R.color.transparent)
                 .setTicker(" ")
                 .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
