@@ -136,7 +136,6 @@ public class SoundService extends Service {
             List<Integer> volumeTypesToShow
     ) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, staticNotificationId);
-        return builder.build();
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_view);
         if (profiles != null) {
@@ -179,7 +178,7 @@ public class SoundService extends Service {
             builder.setContentText(context.getString(R.string.notification_widget_featured))
                     .setCustomBigContentView(remoteViews);
         }
-
+        builder.setStyle(new androidx.core.app.NotificationCompat.DecoratedCustomViewStyle());
         return builder.build();
     }
 
@@ -187,7 +186,7 @@ public class SoundService extends Service {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static Intent getIntentForProfile(Context content, SoundProfile profile) {
+    public static Intent getIntentForP0file(Context content, SoundProfile profile) {
         Intent result = new Intent(content, SoundService.class);
         result.setAction(APPLY_PROFILE_ACTION);
         result.putExtra(PROFILE_ID, profile.id);
