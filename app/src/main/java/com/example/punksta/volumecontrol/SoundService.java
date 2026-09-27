@@ -185,7 +185,7 @@ public class SoundService extends Service {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    public static Intent getIntentForP0file(Context content, SoundProfile profile) {
+    public static Intent getIntentForProfile(Context content, SoundProfile profile) {
         Intent result = new Intent(content, SoundService.class);
         result.setAction(APPLY_PROFILE_ACTION);
         result.putExtra(PROFILE_ID, profile.id);
