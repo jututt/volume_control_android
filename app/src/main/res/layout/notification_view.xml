@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="8dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    android:background="#00000000">
 
     <ImageView
         android:id="@+id/app_icon"
