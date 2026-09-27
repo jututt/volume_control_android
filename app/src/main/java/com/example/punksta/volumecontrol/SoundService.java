@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -233,8 +234,14 @@ public class SoundService extends Service {
 
         if (FOREGROUND_ACTION.equals(action)) {
             showProfiles = intent.getBooleanExtra(EXTRA_SHOW_PROFILES, true);
+
             Object value = intent.getSerializableExtra(EXTRA_VOLUME_TYPES_IDS);
-            profilesToShow = value instanceof List ? (List<Integer>) value : null;
+            if (value instanceof List && !((List<?>) value).isEmpty()) {
+                profilesToShow = (List<Integer>) value;
+            } else {
+                profilesToShow = new ArrayList<>(Arrays.asList(AudioManager.STREAM_MUSIC));
+            }
+
             registerListeners();
             updateFullNotification();
             return START_NOT_STICKY;
