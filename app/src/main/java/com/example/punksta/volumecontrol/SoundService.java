@@ -183,9 +183,9 @@ public class SoundService extends Service {
         notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
         
         // Overrides the view hierarchy root style context programmatically
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            notification.decorView = null; // Forces system to abandon template decor caching
-        }
+        //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            //notification.decorView = null; // Forces system to abandon template decor caching
+        //}
 
         return notification;
     }
