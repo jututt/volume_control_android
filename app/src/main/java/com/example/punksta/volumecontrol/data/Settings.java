@@ -3,7 +3,7 @@ package com.example.punksta.volumecontrol.data;
 import android.media.AudioManager;
 
 public class Settings {
-    private static final Integer[] defaultVolumeTypesToShow = {AudioManager.STREAM_MUSIC, AudioManager.STREAM_RING, AudioManager.STREAM_ALARM};
+    private static final Integer[] defaultVolumeTypesToShow = {AudioManager.STREAM_MUSIC};
     public boolean isDarkThemeEnabled = true;
     public boolean isExtendedVolumeSettingsEnabled = false;
     public boolean isNotificationWidgetEnabled = true;
