@@ -130,15 +130,16 @@ public class SoundService extends Service {
     }
 
     
-        private static Notification buildForegroundNotification(
+            private static Notification buildForegroundNotification(
             Context context,
             SoundProfile[] profiles,
             VolumeControl control,
             List<Integer> volumeTypesToShow
     ) {
+        // --- 1. SET UP THE RAW BASE WINDOW ENGINE OVERRIDE ---
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, staticNotificationId);
-
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_view);
+        
         if (profiles != null) {
             remoteViews.removeAllViews(R.id.notifications_user_profiles);
             for (SoundProfile profile : profiles) {
@@ -146,9 +147,7 @@ public class SoundService extends Service {
                 profileViews.setTextViewText(R.id.notification_profile_title, profile.name);
                 Intent i = getIntentForProfile(context, profile);
                 PendingIntent pendingIntent;
-
                 int requestId = PROFILE_ID_PREFIX + profile.id;
-
                 pendingIntent = PendingIntent.getService(context, requestId, i, 0);
                 profileViews.setOnClickPendingIntent(R.id.notification_profile_title, pendingIntent);
                 remoteViews.addView(R.id.notifications_user_profiles, profileViews);
@@ -157,7 +156,6 @@ public class SoundService extends Service {
 
         if (volumeTypesToShow != null) {
             remoteViews.removeAllViews(R.id.volume_sliders);
-
             for (AudioType notificationType : AudioType.getAudioTypes(true)) {
                 if (volumeTypesToShow.contains(notificationType.audioStreamName)) {
                     remoteViews.addView(R.id.volume_sliders, buildVolumeSlider(context, control, notificationType.audioStreamName, context.getString(notificationType.nameId)));
@@ -165,33 +163,33 @@ public class SoundService extends Service {
             }
         }
 
-        // Setup base notification configs
-        builder.setContentTitle(" ")
-                .setOngoing(true)
-                .setContentText(" ")
-                .setSmallIcon(android.R.color.transparent)
-                .setTicker(" ")
-                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
-                .setColorized(true)
-                .setColor(android.graphics.Color.BLACK); // Sets base container framework tint mapping to black
+        // --- 2. THE CORE STRIP CONFIGURATION CHAIN ---
+        // Completely isolates the custom layout by stripping the text placeholder containers
+        builder.setSmallIcon(R.drawable.notification_icon)
+               .setOngoing(true)
+               .setOnlyAlertOnce(true)
+               .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
 
-        if ((volumeTypesToShow != null && volumeTypesToShow.size() > 0) || (profiles != null && profiles.length > 0)) {
-            builder.setContentText(context.getString(R.string.notification_widget_featured))
-                    .setCustomContentView(remoteViews)
-                    .setCustomBigContentView(remoteViews);
+        // Inject the custom views into the structural framework blocks
+        builder.setCustomContentView(remoteViews)
+               .setCustomBigContentView(remoteViews)
+               .setCustomHeadsUpContentView(remoteViews);
+
+        // --- 3. HARD-DECORATE THE GENERATED WRAPPER ---
+        Notification notification = builder.build();
+
+        // This structural reflection flag strips out the outer white template frame capsule 
+        // completely across Custom ROMs like crDroid
+        notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
+        
+        // Overrides the view hierarchy root style context programmatically
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            notification.decorView = null; // Forces system to abandon template decor caching
         }
 
-        // --- FIXED FOR COMPILING WITHOUT EXT. DEPENDENCIES ---
-        // Generates the final notification and directly strips the system container limits 
-        // through Android's native framework decoration style properties.
-        Notification notification = builder.build();
-        //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            //notification.style = new android.app.Notification.MediaStyle();
-        //}
-
-        return notification;   
+        return notification;
     }
-
+    
     private static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
