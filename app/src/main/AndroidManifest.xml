@@ -17,7 +17,11 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <service android:name=".SoundService" />
+        
+        <!-- SECURED: Added exported="false" since it has no intent filters -->
+        <service 
+            android:name=".SoundService"
+            android:exported="false" />
 
         <receiver
             android:name=".BootReceiver"
@@ -31,19 +35,22 @@
             </intent-filter>
         </receiver>
 
-
-        <activity android:name=".EditProfileActivity" />
+        <!-- SECURED: Added exported="false" since it has no intent filters -->
+        <activity 
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+            
+        <!-- FIXED: Added android:exported="true" because it contains a LAUNCHER intent filter -->
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
