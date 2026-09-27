@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://android.com"
+    xmlns:tools="http://android.com">
 
+    <!-- Core Audio and System Permission Flags -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
 
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
-    <!-- Add this so your background service notification can physically display on Android 13+ -->
+    <!-- Modern SDK API Compatibility Permissions (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
         android:name=".SoundApplication"
@@ -21,16 +22,13 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         
-        <!-- SECURED: Added exported="false" since it has no intent filters -->
+        <!-- Persistent Service handling audio widget parameters -->
         <service 
             android:name=".SoundService"
             android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property 
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Manages persistent background volume control notifications and audio state widgets." />
-        </service>
+            android:foregroundServiceType="mediaPlayback" />
 
+        <!-- Broadcast Receiver tracking system startup events -->
         <receiver
             android:name=".BootReceiver"
             android:enabled="true"
@@ -43,12 +41,12 @@
             </intent-filter>
         </receiver>
 
-        <!-- SECURED: Added exported="false" since it has no intent filters -->
+        <!-- Secondary Profile Editing view framework -->
         <activity 
             android:name=".EditProfileActivity"
             android:exported="false" />
             
-        <!-- FIXED: Added android:exported="true" because it contains a LAUNCHER intent filter -->
+        <!-- System Entry Point Application View Interface -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
@@ -59,7 +57,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>
