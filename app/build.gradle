@@ -1,15 +1,22 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    // REQUIRED: Must match your applicationId for modern Gradle versions
+    namespace "com.jututt.volumecontrol" 
+    
+    // Updated to a modern SDK baseline compatible with Gradle 8
+    compileSdkVersion 34 
 
     defaultConfig {
         applicationId "com.jututt.volumecontrol"
-        minSdkVersion 15
-        targetSdkVersion 30
+        minSdkVersion 21 // Bumped from 15 to 21 to support modern library versions
+        targetSdkVersion 34
         versionCode 32
         versionName "2.6.1"
+
+        // YOUR ORIGINAL REQUEST: Removes all languages except English
         resConfigs "en"
     }
 
@@ -17,18 +24,21 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Updated to the optimized standard filename
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         encoding = 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        // Modern Gradle toolchains require Java 11 or higher to build
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
-    lintOptions {
-        disable 'GoogleAppIndexingWarning'
+    // Modern syntax replacing the legacy lintOptions block
+    lint {
+        disable += ['GoogleAppIndexingWarning']
     }
 }
 
