@@ -171,8 +171,8 @@ public class SoundService extends Service {
                 .setContentText(" ")
                 .setSmallIcon(android.R.color.transparent)
                 .setTicker(" ")
-                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0));
-                .setColorized(true);
+                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0))
+                .setColorized(true)
                 .setColor(android.graphics.Color.parseColor("#121212")); // Solid Off-Black matching your background_dark
         
         if ((volumeTypesToShow != null && volumeTypesToShow.size() > 0) || (profiles != null && profiles.length > 0)) {
