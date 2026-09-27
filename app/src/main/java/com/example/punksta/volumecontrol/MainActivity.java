@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -43,6 +44,7 @@ import static com.example.punksta.volumecontrol.util.WritePermissionChecker.chec
 
 public class MainActivity extends BaseActivity {
 
+    private static final int POST_NOTIFICATIONS_REQUEST_CODE = 1001;
     public static final String PROFILE_ID = "PROFILE_ID";
     private List<TypeListener> volumeListeners = new ArrayList<>();
     private SoundProfileStorage profileStorage;
@@ -63,6 +65,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestNotificationPermissionIfNeeded();
         profileStorage = SoundApplication.getSoundProfileStorage(this);
         buildUi();
         if (savedInstanceState == null) {
@@ -70,6 +73,16 @@ public class MainActivity extends BaseActivity {
                 goingGoFinish = true;
                 finish();
             }
+        }
+    }
+
+    private void requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                    POST_NOTIFICATIONS_REQUEST_CODE);
         }
     }
 
