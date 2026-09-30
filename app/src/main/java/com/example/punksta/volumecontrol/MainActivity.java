@@ -173,14 +173,6 @@ public class MainActivity extends BaseActivity {
         s.setChecked(isDarkTheme());
         s.setOnCheckedChangeListener((buttonView, isChecked) -> setThemeAndRecreate(isChecked));
 
-        findViewById(R.id.rate_app).setOnClickListener(v -> {
-            try {
-                IntentHelper.goToMarket(this);
-            } catch (Throwable e) {
-                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         renderProfileItems();
 
         Switch s2 = findViewById(R.id.extended_volumes);
