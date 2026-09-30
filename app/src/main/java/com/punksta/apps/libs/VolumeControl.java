@@ -44,7 +44,6 @@ public class VolumeControl {
         intentFilter.addAction("android.media.STREAM_MUTE_CHANGED_ACTION");
         intentFilter.addAction("android.media.RINGER_MODE_CHANGED");
         intentFilter.addAction("android.media.EXTRA_VIBRATE_SETTING");
-        intentFilter.addAction("android.media.EXTRA_VIBRATE_SETTING");
     }
 
     public Context getContext() {
@@ -153,9 +152,8 @@ public class VolumeControl {
                 notifyListeners(entry.getKey(), current);
             }
             int ringerMode = getRingerMode();
-            System.out.println("new ringer mode " + ringerMode);
             for (RingerModeChangeListener ringerModeListener : ringerModeListeners) {
-                //ringerModeListener.onChange(ringerMode);
+                // no-op: listeners are notified via the main volume callback flow
             }
         }
 
