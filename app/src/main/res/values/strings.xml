@@ -24,22 +24,15 @@
     <string name="settings_darktheme">Dark theme</string>
     <string name="settings_extended_volume_settings">Extended volume settings</string>
     <string name="settings_android_sound_settings">Android sound settings</string>
-    <string name="rate_this_app">Rate app</string>
     <string name="vibrate_mode">Vibrate mode</string>
     <string name="silence">Silence</string>
     <string name="vibrate">Vibrate</string>
     <string name="vibrate_on_calls">Vibrate on calls?</string>
 
     <string name="ring">Ring</string>
-    <string name="notification_widget">Click to open app, swipe down to extend</string>
-    <string name="notification_widget_featured">Click to open app</string>
-
-    <string name="settings_notification_widget">Notification widget</string>
-    <string name="settings_notification_widget_profiles">Show profiles in notification widget</string>
 
     <string name="dnd_permission_title">The app requires access to the "Do Not Disturb" permission</string>
     <string name="dnd_permission_message">This permission is required to be able to change volume and select sound profiles in Do Not Disturb mode</string>
-    <string name="volume_types_in_widget">Volume types in widget</string>
 
     <string-array name="vibrate_settings">
         <item>Always on</item>

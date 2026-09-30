@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +29,6 @@ import com.punksta.apps.libs.VolumeControl;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -110,40 +108,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void renderVolumeTypesInNotificationWidget() {
-        List<AudioType> allThings = AudioType.getAudioTypes(true);
-
-        TextView volumeTypesToShow = findViewById(R.id.types_to_show_in_profile);
-
-        volumeTypesToShow.setOnClickListener(view -> {
-
-            List<Integer> checked = new ArrayList<>(Arrays.asList(settings.volumeTypesToShow));
-
-            CharSequence[] titles = new CharSequence[allThings.size()];
-            boolean[] isCheckedArray = new boolean[allThings.size()];
-
-            for (int i = 0; i < allThings.size(); i++) {
-                titles[i] = getString(allThings.get(i).nameId);
-                isCheckedArray[i] = checked.contains(allThings.get(i).audioStreamName);
-            }
-
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.volume_types_in_widget)
-                    .setMultiChoiceItems(titles, isCheckedArray, (dialogInterface, i, b) -> {
-                        if (b) {
-                            checked.add(allThings.get(i).audioStreamName);
-                        } else {
-                            checked.remove(Integer.valueOf(allThings.get(i).audioStreamName));
-                        }
-                    })
-                    .setPositiveButton("save", (dialogInterface, i) -> {
-                        setVolumeTypesToShowInWidget(checked.toArray(new Integer[0]));
-                        startSoundService();
-                    })
-                    .show();
-        });
-    }
-
     @Override
     protected void setExtendedVolumesEnabled(boolean isEnabled) {
         super.setExtendedVolumesEnabled(isEnabled);
@@ -209,14 +173,6 @@ public class MainActivity extends BaseActivity {
         s.setChecked(isDarkTheme());
         s.setOnCheckedChangeListener((buttonView, isChecked) -> setThemeAndRecreate(isChecked));
 
-        findViewById(R.id.rate_app).setOnClickListener(v -> {
-            try {
-                IntentHelper.goToMarket(this);
-            } catch (Throwable e) {
-                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         renderProfileItems();
 
         Switch s2 = findViewById(R.id.extended_volumes);
@@ -231,34 +187,6 @@ public class MainActivity extends BaseActivity {
 
         control.addOnRingerModeListener(ringerModeSwitcher);
         ringerModeSwitch.setVisibility(View.GONE);
-
-        Switch notificationSwitch = findViewById(R.id.notification_widget);
-        notificationSwitch.setChecked(isNotificationWidgetEnabled());
-
-        Switch profilesSwitch = findViewById(R.id.notification_widget_profiles);
-        profilesSwitch.setChecked(settings.showProfilesInNotification);
-
-        profilesSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            setNotificationProfiles(isChecked);
-            startSoundService();
-        });
-        TextView volumeTypesToShow = findViewById(R.id.types_to_show_in_profile);
-
-        renderVolumeTypesInNotificationWidget();
-
-        profilesSwitch.setVisibility(isNotificationWidgetEnabled() ? View.VISIBLE : View.GONE);
-        volumeTypesToShow.setVisibility(isNotificationWidgetEnabled() ? View.VISIBLE : View.GONE);
-
-        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            setNotificationWidgetEnabled(isChecked);
-            profilesSwitch.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-            volumeTypesToShow.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-            if (isChecked) {
-                startSoundService();
-            } else {
-                stopSoundService();
-            }
-        });
 
         Switch vibrateOnCalls = findViewById(R.id.vibrate_on_calls);
         vibrateOnCalls.setOnCheckedChangeListener((compoundButton, isEnabled) -> {
@@ -290,21 +218,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void stopSoundService() {
-        Intent i = SoundService.getStopIntent(this);
-        stopService(i);
-    }
-
-    private void startSoundService() {
-        Intent i = SoundService.getIntentForForeground(this, settings);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(i);
-        } else {
-            startService(i);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -317,9 +230,6 @@ public class MainActivity extends BaseActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        if (isNotificationWidgetEnabled() && isDNDPermissionGranted(this)) {
-            startSoundService();
         }
         updateVibrateOnCalls();
     }
