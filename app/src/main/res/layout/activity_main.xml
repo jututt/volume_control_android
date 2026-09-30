@@ -92,34 +92,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_extended_volume_settings" />
 
-            <Switch
-                android:id="@+id/notification_widget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:text="@string/settings_notification_widget" />
-
-            <Switch
-                android:id="@+id/notification_widget_profiles"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:minHeight="48dp"
-                android:text="@string/settings_notification_widget_profiles" />
-
-            <TextView
-                android:id="@+id/types_to_show_in_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center"
-                android:minHeight="48dp"
-                android:text="@string/volume_types_in_widget"
-                android:textColor="?attr/themeColorAccent"
-                android:textSize="15sp" />
-
             <Button
                 android:id="@+id/go_to_settings"
                 style="@style/Settings_button"

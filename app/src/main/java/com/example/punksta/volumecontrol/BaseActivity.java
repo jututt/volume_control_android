@@ -52,25 +52,6 @@ abstract public class BaseActivity extends AppCompatActivity {
         return settings.isDarkThemeEnabled;
     }
 
-    public boolean isNotificationWidgetEnabled() {
-        return settings.isNotificationWidgetEnabled;
-    }
-
-    public void setNotificationWidgetEnabled(boolean notificationWidgetEnabled) {
-        this.settings.isNotificationWidgetEnabled = notificationWidgetEnabled;
-        settingsStorage.save(this.settings);
-    }
-
-    public void setNotificationProfiles(boolean isEnabled) {
-        this.settings.showProfilesInNotification = isEnabled;
-        settingsStorage.save(this.settings);
-    }
-
-    public void setVolumeTypesToShowInWidget(Integer[] items) {
-        settings.volumeTypesToShow = items;
-        settingsStorage.save(this.settings);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
