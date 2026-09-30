@@ -30,8 +30,7 @@ public class VolumeControl {
     private AudioObserver audioObserver;
     private boolean ignoreUpdates = false;
 
-    private String VIBRATE_WHEN_RINGING = "vibrate_when_ringing";
-
+    private static final String VIBRATE_WHEN_RINGING = "vibrate_when_ringing";
 
     public VolumeControl(Context context, Handler handler) {
         this.context = context;
@@ -74,7 +73,6 @@ public class VolumeControl {
         return mediaManager.getStreamVolume(type);
     }
 
-
     public void registerVolumeListener(int type, final VolumeListener volumeListener, boolean sendCurrentValue) {
         boolean firstAudioType = listenerSet.isEmpty();
         boolean isFirstListener = !listenerSet.containsKey(type);
@@ -92,8 +90,9 @@ public class VolumeControl {
             context.registerReceiver(audioObserver, intentFilter);
         }
 
-        if (sendCurrentValue)
+        if (sendCurrentValue) {
             volumeListener.onChangeIndex(type, getLevel(type), getMaxLevel(type));
+        }
     }
 
     public void unRegisterVolumeListener(int type, VolumeListener volumeListener) {
@@ -119,7 +118,6 @@ public class VolumeControl {
        return Settings.System.getInt(getContext().getContentResolver(), VIBRATE_WHEN_RINGING) == 1;
     }
 
-
     public int getRingerMode() {
         return mediaManager.getRingerMode();
     }
@@ -133,8 +131,6 @@ public class VolumeControl {
     }
 
     private class AudioObserver extends BroadcastReceiver {
-
-        //last levels for each AudioType
         private Runnable updateRunnable = () -> {
             update();
             ignoreUpdates = false;
@@ -142,18 +138,15 @@ public class VolumeControl {
 
         private void notifyListeners(Integer type, int newLevel) {
             int max = getMaxLevel(type);
-            for (VolumeListener volumeListener : listenerSet.get(type))
+            for (VolumeListener volumeListener : listenerSet.get(type)) {
                 volumeListener.onChangeIndex(type, newLevel, max);
+            }
         }
 
         private void update() {
             for (Map.Entry<Integer, Set<VolumeListener>> entry : listenerSet.entrySet()) {
                 int current = getLevel(entry.getKey());
                 notifyListeners(entry.getKey(), current);
-            }
-            int ringerMode = getRingerMode();
-            for (RingerModeChangeListener ringerModeListener : ringerModeListeners) {
-                // no-op: listeners are notified via the main volume callback flow
             }
         }
 
