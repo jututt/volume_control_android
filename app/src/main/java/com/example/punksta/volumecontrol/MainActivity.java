@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +45,10 @@ public class MainActivity extends BaseActivity {
 
     private static final int POST_NOTIFICATIONS_REQUEST_CODE = 1001;
     public static final String PROFILE_ID = "PROFILE_ID";
-    private List<TypeListener> volumeListeners = new ArrayList<>();
+    private final List<TypeListener> volumeListeners = new ArrayList<>();
     private SoundProfileStorage profileStorage;
     private boolean goingGoFinish = false;
-    private VolumeControl.RingerModeChangeListener ringerModeSwitcher = (int mode) -> {
+    private final VolumeControl.RingerModeChangeListener ringerModeSwitcher = (int mode) -> {
         RingerModeSwitch ringerModeSwitch = findViewById(R.id.ringerMode);
         ringerModeSwitch.setRingMode(mode);
     };
@@ -109,16 +108,6 @@ public class MainActivity extends BaseActivity {
         } else {
             return false;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // no-op; state is handled elsewhere
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        // no-op; state is handled elsewhere
     }
 
     private void renderVolumeTypesInNotificationWidget() {
@@ -187,7 +176,6 @@ public class MainActivity extends BaseActivity {
                 volumeSliderView.setMinVolume(control.getMinLevel(type.audioStreamName));
                 volumeSliderView.setCurrentVolume(control.getLevel(type.audioStreamName));
 
-
                 final TypeListener volumeListener = new TypeListener(type.audioStreamName) {
                     @Override
                     public void onChangeIndex(int audioType, int currentLevel, int max) {
@@ -216,7 +204,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void buildUi() {
-
         Switch s = findViewById(R.id.dark_theme_switcher);
 
         s.setChecked(isDarkTheme());
@@ -236,11 +223,8 @@ public class MainActivity extends BaseActivity {
         s2.setChecked(isExtendedVolumesEnabled());
         s2.setOnCheckedChangeListener((buttonView, isChecked) -> setExtendedVolumesEnabled(isChecked));
 
-
         findViewById(R.id.go_to_settings).setOnClickListener(v -> IntentHelper.goToVolumeSettings(this));
-
         findViewById(R.id.new_profile).setOnClickListener(v -> startActivityForResult(new Intent(MainActivity.this, EditProfileActivity.class), REQUEST_CODE_NEW_PROFILE));
-
 
         RingerModeSwitch ringerModeSwitch = findViewById(R.id.ringerMode);
         ringerModeSwitch.setRingMode(control.getRingerMode());
@@ -249,11 +233,9 @@ public class MainActivity extends BaseActivity {
         ringerModeSwitch.setVisibility(View.GONE);
 
         Switch notificationSwitch = findViewById(R.id.notification_widget);
-
         notificationSwitch.setChecked(isNotificationWidgetEnabled());
 
         Switch profilesSwitch = findViewById(R.id.notification_widget_profiles);
-
         profilesSwitch.setChecked(settings.showProfilesInNotification);
 
         profilesSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
@@ -290,7 +272,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
 
         try {
             renderProfiles();
@@ -343,15 +324,12 @@ public class MainActivity extends BaseActivity {
         updateVibrateOnCalls();
     }
 
-
-
     private void renderProfile(final SoundProfile profile) {
         final LinearLayout profiles = findViewById(R.id.profile_list);
         final VolumeProfileView view = new VolumeProfileView(this);
         String tag = "profile_" + profile.id;
         profiles.removeView(profiles.findViewWithTag(tag));
         view.setTag(tag);
-
 
         view.setProfileTitle(profile.name);
         view.setOnActivateClickListener(() -> applyProfile(control, profile));
@@ -378,7 +356,6 @@ public class MainActivity extends BaseActivity {
         for (final SoundProfile profile : profileStorage.loadAll()) {
             renderProfile(profile);
         }
-
     }
 
     private void requireChangeVolume(AudioType audioType, int volume) {
@@ -406,7 +383,6 @@ public class MainActivity extends BaseActivity {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         startActivity(intent);
-
     }
 
     @Override
