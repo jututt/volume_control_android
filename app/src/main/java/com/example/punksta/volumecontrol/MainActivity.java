@@ -113,12 +113,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
+        // no-op; state is handled elsewhere
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        //super.onSaveInstanceState(outState, outPersistentState);
+        // no-op; state is handled elsewhere
     }
 
     private void renderVolumeTypesInNotificationWidget() {
